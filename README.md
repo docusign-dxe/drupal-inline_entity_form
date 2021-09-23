@@ -1,3 +1,4 @@
+# Inline entity form
 Provides a widget for inline management (creation, modification, removal) of referenced entities.
 The primary use case is the parent -> children one (product display -> products, order -> line items, etc.),
 where the child entities are never managed outside the parent form.
@@ -8,13 +9,13 @@ Requires integration code to be provided for each entity type that can be refere
 Supports the commerce_product (including Commerce AutoSKU integraton),
 commerce_line_item, node, taxonomy_term entity types out of the box.
 
-Getting started
+# Getting started
 ---------------
 Edit the reference field for which you want to use this module
 (for example, the Product field on a product display node, or the Line Items
 one on commerce_order) and select one of the "Inline entity form" widgets.
 
-Widgets
+# Widgets
 -------
 Two widgets are provided:
 - "Inline entity form - Single value" - Shows the inline form in a fieldset
@@ -27,7 +28,7 @@ for inline management of entities.
 Has optimal UX when there's only one bundle selected (this is the
 "Product types that can be referenced" setting on product reference fields).
 
-Integrating with Inline Entity Form
+# Integrating with Inline Entity Form
 -----------------------------------
 An entity type can add support for this module by declaring the
 inline entity form controller class in its entity info:
