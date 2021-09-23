@@ -232,6 +232,7 @@ class InlineEntityFormComplex extends InlineEntityFormBase implements ContainerF
       '#ief_id' => $this->getIefId(),
       '#ief_root' => TRUE,
       '#translating' => $this->isTranslating($form_state),
+      '#translatable' => $this->fieldDefinition->isTranslatable(),
       '#field_title' => $this->fieldDefinition->getLabel(),
       '#after_build' => [
         [get_class($this), 'removeTranslatabilityClue'],
@@ -242,7 +243,7 @@ class InlineEntityFormComplex extends InlineEntityFormBase implements ContainerF
       $element['#open'] = $form_state->getUserInput() ?: !$this->getSetting('collapsed');
     }
 
-    $this->prepareFormState($form_state, $items, $element['#translating']);
+    $this->prepareFormState($form_state, $items, ($element['#translating'] && !$element['#translatable']));
     $entities = $form_state->get(['inline_entity_form', $this->getIefId(), 'entities']);
 
     // Prepare cardinality information.
@@ -402,7 +403,7 @@ class InlineEntityFormComplex extends InlineEntityFormBase implements ContainerF
             '#submit' => ['inline_entity_form_open_row_form'],
             '#ief_row_delta' => $key,
             '#ief_row_form' => 'remove',
-            '#access' => !$element['#translating'],
+            '#access' => !$element['#translating'] || $element['#translatable'],
           ];
         }
       }
@@ -410,7 +411,7 @@ class InlineEntityFormComplex extends InlineEntityFormBase implements ContainerF
 
     // When in translation, the widget only supports editing (translating)
     // already added entities, so there's no need to show the rest.
-    if ($element['#translating']) {
+    if ($element['#translating'] && !$element['#translatable']) {
       if (empty($entities)) {
         // There are no entities available for translation, hide the widget.
         $element['#access'] = FALSE;
